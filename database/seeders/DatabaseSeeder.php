@@ -3,6 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Whatsapp;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +24,20 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        Whatsapp::create([
+            'name' => 'wa',
+            'status' => 0
+        ]);
+
+        Category::create([
+            'name' => 'Fruits'
+        ]);
+
+        Category::create([
+            'name' => 'Vegetables'
+        ]);
+
+        Product::factory(5)->create();
     }
 }

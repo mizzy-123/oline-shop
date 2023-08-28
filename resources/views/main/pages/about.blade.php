@@ -1,5 +1,7 @@
 @extends('main.layouts.main')
 
+@section('title', 'about')
+
 @section('container')
 
 <div class="about-box-main">
