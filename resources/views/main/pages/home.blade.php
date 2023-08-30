@@ -118,6 +118,7 @@
         </div>
 
         <div class="row special-list">
+            @foreach ($product as $p)
             <div class="col-lg-3 col-md-6 special-grid best-seller">
                 <div class="products-single fix">
                     <div class="box-img-hover">
@@ -125,23 +126,25 @@
                             <p class="sale">Sale</p>
                         </div>
                         <img src="{{ asset('images/img-pro-01.jpg') }}" class="img-fluid" alt="Image">
-                        <div class="mask-icon">
+                        <div class="mask-icon" data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-price="{{ $p->harga }}" data-image="{{ asset('images/img-pro-01.jpg') }}" data-route="{{ route('product.detail', ['product' => $p->slug]) }}">
                             <ul>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fas fa-sync-alt"></i></a></li>
                                 <li><a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
                             </ul>
-                            <a class="cart" href="#">Add to Cart</a>
+                            <a class="cart" href="" id="addcart">Add to Cart</a>
                         </div>
                     </div>
                     <div class="why-text">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <h5> $7.79</h5>
+                        <h4>{{ $p->name }}</h4>
+                        <h5>Rp. {{ $p->harga }}</h5>
                     </div>
                 </div>
             </div>
+            @endforeach
+            
 
-            <div class="col-lg-3 col-md-6 special-grid top-featured">
+            {{-- <div class="col-lg-3 col-md-6 special-grid top-featured">
                 <div class="products-single fix">
                     <div class="box-img-hover">
                         <div class="type-lb">
@@ -208,7 +211,7 @@
                         <h5> $15.79</h5>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
@@ -284,4 +287,62 @@
     </div>
 </div> --}}
 <!-- End Blog  -->
+
+@push('js')
+    {{-- <script src="{{ asset('js/cart.js') }}"></script> --}}
+    {{-- <script>
+        const addToCartButton = document.querySelectorAll("#addcart");
+addToCartButton.forEach((button) => {
+    button.addEventListener("click", function (e) {
+        // e.preventDefault();
+        const productDiv = this.closest(".mask-icon");
+        const productId = productDiv.dataset.id;
+        const productName = productDiv.dataset.name;
+        const productPrice = parseFloat(productDiv.dataset.price);
+        addToCard(productId, productName, productPrice);
+    });
+});
+
+function addToCard(productId, productName, productPrice) {
+    const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+    let existingItem = cart.find((item) => item.id === productId);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            quantity: 1,
+        });
+    }
+
+    sessionStorage.setItem("cart", JSON.stringify(cart));
+    updateCartDisplay();
+}
+
+function updateCartDisplay() {
+    const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+    const cartDiv = document.querySelector(".cart-list li");
+    if (cart.length === 0) {
+        cartDiv.innerHTML = "<p>Your Cart is Empty</p>";
+    } else {
+        const cartItems = cart
+            .map(
+                (item) =>
+                    `<a href="#" class="photo"><img src="{{ asset('images/img-pro-01.jpg') }}" class="cart-thumb" alt="" /></a>
+                    <h6><a href="#">${item.name} </a></h6>
+                    <p>${item.quantity}x - <span class="price">Rp.${item.price}</span></p>`
+            )
+            .join("");
+        cartDiv.insertAdjacentHTML("beforeend", cartItems);
+    }
+}
+
+updateCartDisplay();
+
+    </script> --}}
+@endpush
+
 @endsection

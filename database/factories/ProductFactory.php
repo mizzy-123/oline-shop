@@ -21,7 +21,8 @@ class ProductFactory extends Factory
             'slug' => $this->faker->slug(),
             'description' => $this->faker->paragraph(),
             'category_id' => mt_rand(1, 2),
-            'harga' => rand(10, 100) * 100
+            'harga' => rand(10, 100) * 100,
+            'qty' => mt_rand(1, 5)
         ];
     }
 }
