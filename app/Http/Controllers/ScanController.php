@@ -15,12 +15,12 @@ class ScanController extends Controller
             try {
                 $response = Http::withHeaders([
                     'key' => 'mysupersecretkey'
-                ])->get('http://192.168.43.204:5001/start-session?scan=true', [
+                ])->get('http://localhost:5001/start-session?scan=true', [
                     'session' => 'mysession'
                 ]);
 
+                $data = $response->json();
                 if (!$response->failed()) {
-                    $data = $response->json();
 
                     return view('dashboard.pages.scan', [
                         'status' => true,
@@ -29,7 +29,7 @@ class ScanController extends Controller
                 } else {
                     return view('dashboard.pages.scan', [
                         'status' => false
-                    ]);
+                    ])->with('failed', $data['message']);
                 }
             } catch (\Throwable $th) {
                 return view('dashboard.pages.scan', [
@@ -50,5 +50,26 @@ class ScanController extends Controller
         return response()->json([
             'status' => $statuswa->status,
         ]);
+    }
+
+    public function disconnect()
+    {
+        try {
+            $response = Http::withHeaders([
+                'key' => 'mysupersecretkey'
+            ])->get('http://localhost:5001/delete-session', [
+                'session' => 'mysession'
+            ]);
+
+            $data = $response->json();
+
+            if (!$response->failed()) {
+                return back()->with('success', 'Disconnected successfull');
+            } {
+                return back()->with('failed', $data['message']);
+            }
+        } catch (\Throwable $th) {
+            return back()->with('failed', 'Server error');
+        }
     }
 }

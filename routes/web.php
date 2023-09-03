@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ScanController;
+use App\Http\Controllers\WhatsappController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,13 +25,15 @@ Route::get('/about', function () {
     return view('main.pages.about');
 })->name('about');
 
-Route::get('/dashboard', function () {
-    return view('dashboard.pages.dashboard');
-})->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/scan', [ScanController::class, 'index'])->name('scan');
 
 Route::get('/statuswa', [ScanController::class, 'status']);
+
+Route::get('/resend/{wamessage}', [WhatsappController::class, 'resend'])->name('resend');
+
+Route::get('/disconnect', [ScanController::class, 'disconnect'])->name('disconnect');
 
 Route::get('/cart', function () {
     return view('main.pages.cart');
