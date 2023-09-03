@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
 use App\Models\WaMessage;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
@@ -79,7 +83,6 @@ class CheckoutController extends Controller
                             'message' => $pesan,
                             'status' => 1
                         ]);
-                        return "berhasil";
                     } else {
                         WaMessage::create([
                             'name' => $data['firstname'] . " " . $data['lastname'],
@@ -87,7 +90,6 @@ class CheckoutController extends Controller
                             'message' => $pesan,
                             'status' => 2
                         ]);
-                        return "gagal";
                     }
                 } catch (\Throwable $th) {
                     WaMessage::create([
@@ -101,6 +103,8 @@ class CheckoutController extends Controller
             } else {
                 return back()->withErrors("Yout cart is empty")->withInput();
             }
+
+            return $this->registerUser($request);
         } else {
             return back()->withErrors($validated)
                 ->withInput();
@@ -110,13 +114,28 @@ class CheckoutController extends Controller
     public function sendWa($pesan, $nomor)
     {
         $response = Http::withHeaders([
-            'key' => 'mysupersecretkey'
-        ])->get('http://localhost:5001/send-message', [
-            'session' => 'mysession',
+            'key' => env('KEY')
+        ])->get(env('API_URL_WHATSSAPP') . 'send-message', [
+            'session' => env('SESSION'),
             'to' => $nomor,
             'text' => $pesan
         ]);
 
         return $response;
+    }
+
+    public function registerUser($request)
+    {
+        $user = User::create([
+            'name' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect(route('verification.notice'))->with('verif', 'verifikasi email telah dikirim');
     }
 }

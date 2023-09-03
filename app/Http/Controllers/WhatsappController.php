@@ -30,9 +30,9 @@ class WhatsappController extends Controller
     public function sendWa($pesan, $nomor)
     {
         $response = Http::withHeaders([
-            'key' => 'mysupersecretkey'
-        ])->get('http://localhost:5001/send-message', [
-            'session' => 'mysession',
+            'key' => env('KEY')
+        ])->get(env('API_URL_WHATSSAPP') . 'send-message', [
+            'session' => env('SESSION'),
             'to' => $nomor,
             'text' => $pesan
         ]);

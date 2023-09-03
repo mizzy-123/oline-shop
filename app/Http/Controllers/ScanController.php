@@ -14,9 +14,9 @@ class ScanController extends Controller
         if ($cek->status == 0) {
             try {
                 $response = Http::withHeaders([
-                    'key' => 'mysupersecretkey'
-                ])->get('http://localhost:5001/start-session?scan=true', [
-                    'session' => 'mysession'
+                    'key' => env('KEY')
+                ])->get(env('API_URL_WHATSSAPP') . 'start-session?scan=true', [
+                    'session' => env('SESSION')
                 ]);
 
                 $data = $response->json();
@@ -56,9 +56,9 @@ class ScanController extends Controller
     {
         try {
             $response = Http::withHeaders([
-                'key' => 'mysupersecretkey'
-            ])->get('http://localhost:5001/delete-session', [
-                'session' => 'mysession'
+                'key' => env('KEY')
+            ])->get(env('API_URL_WHATSSAPP') . 'delete-session', [
+                'session' => env('SESSION')
             ]);
 
             $data = $response->json();

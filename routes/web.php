@@ -4,8 +4,11 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ScanController;
 use App\Http\Controllers\WhatsappController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,15 +28,34 @@ Route::get('/about', function () {
     return view('main.pages.about');
 })->name('about');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/scan', [ScanController::class, 'index'])->name('scan');
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('verified')->name('dashboard');
 
-Route::get('/statuswa', [ScanController::class, 'status']);
+    Route::get('/scan', [ScanController::class, 'index'])->name('scan');
 
-Route::get('/resend/{wamessage}', [WhatsappController::class, 'resend'])->name('resend');
+    Route::get('/statuswa', [ScanController::class, 'status']);
 
-Route::get('/disconnect', [ScanController::class, 'disconnect'])->name('disconnect');
+    Route::get('/resend/{wamessage}', [WhatsappController::class, 'resend'])->name('resend');
+
+    Route::get('/disconnect', [ScanController::class, 'disconnect'])->name('disconnect');
+
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+
+        return redirect('/dashboard');
+    })->middleware('signed')->name('verification.verify');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+
+    Route::get('/register', [RegisterController::class, 'index'])->name('register');
+});
 
 Route::get('/cart', function () {
     return view('main.pages.cart');
