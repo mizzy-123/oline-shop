@@ -38,6 +38,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'Vegetables'
         ]);
 
-        Product::factory(5)->create();
+        // Product::factory(5)->create();
     }
 }

@@ -1,7 +1,3 @@
-@php
-    use App\Models\Title;
-@endphp
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +13,9 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link rel="stylesheet" href="{{ asset('assets/css/shared/iconly.css') }}">
+
+    {{-- import css --}}
+    @stack('css')
 
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>

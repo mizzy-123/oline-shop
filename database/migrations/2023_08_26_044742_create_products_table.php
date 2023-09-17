@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('description');
+            $table->longText('description');
             $table->integer('harga');
             $table->integer('qty');
             $table->timestamps();

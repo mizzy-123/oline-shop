@@ -3,7 +3,7 @@
       <div class="sidebar-header position-relative">
         <div class="d-flex justify-content-between align-items-center">
           <div class="logo">
-            <a href="index.html"><img src="assets/images/logo/logo.svg" alt="Logo" srcset="" /></a>
+            <a href="index.html"><img src="{{ asset('images/logo.png') }}" alt="Logo" srcset="" style="height: 4rem"/></a>
           </div>
           <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
             <svg
@@ -70,58 +70,10 @@
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="#">Data product</a>
+                <a href="{{ route('product.index') }}">Data product</a>
               </li>
               <li class="submenu-item">
-                <a href="#">Jenis product</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="sidebar-item has-sub">
-            <a href="#" class="sidebar-link">
-              <i class="bi bi-collection-fill"></i>
-              <span>Extra Components</span>
-            </a>
-            <ul class="submenu">
-              <li class="submenu-item">
-                <a href="extra-component-avatar.html">Avatar</a>
-              </li>
-              <li class="submenu-item">
-                <a href="extra-component-sweetalert.html">Sweet Alert</a>
-              </li>
-              <li class="submenu-item">
-                <a href="extra-component-toastify.html">Toastify</a>
-              </li>
-              <li class="submenu-item">
-                <a href="extra-component-rating.html">Rating</a>
-              </li>
-              <li class="submenu-item">
-                <a href="extra-component-divider.html">Divider</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="sidebar-item has-sub">
-            <a href="#" class="sidebar-link">
-              <i class="bi bi-grid-1x2-fill"></i>
-              <span>Layouts</span>
-            </a>
-            <ul class="submenu">
-              <li class="submenu-item">
-                <a href="layout-default.html">Default Layout</a>
-              </li>
-              <li class="submenu-item">
-                <a href="layout-vertical-1-column.html">1 Column</a>
-              </li>
-              <li class="submenu-item">
-                <a href="layout-vertical-navbar.html">Vertical Navbar</a>
-              </li>
-              <li class="submenu-item">
-                <a href="layout-rtl.html">RTL Layout</a>
-              </li>
-              <li class="submenu-item">
-                <a href="layout-horizontal.html">Horizontal Menu</a>
+                <a href="{{ route('jenis-product.index') }}">Jenis product</a>
               </li>
             </ul>
           </li>

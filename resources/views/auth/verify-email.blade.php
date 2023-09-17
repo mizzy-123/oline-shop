@@ -42,7 +42,8 @@
             <h1 class="auth-subtitle"><strong>Verify New Email Adress</strong></h1>
             <p class="auth-subtitle mb-5">Please click the button below to verify your new email address</p>
 
-            <form action="index.html">
+            <form action="{{ route('verification.send') }}" method="POST">
+              @csrf
               <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Verify New Email Adress</button>
             </form>
           </div>
