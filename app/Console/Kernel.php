@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
                 }
             }
 
-            Log::info('masuk');
+            // Log::info('masuk');
         })->everyMinute();
     }
 
