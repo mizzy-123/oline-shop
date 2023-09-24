@@ -146,7 +146,7 @@
                                         is-invalid
                                     @enderror" id="country" name="negara">
 									    <option data-display="Select" value="">Choose...</option>
-									    <option value="United States">Indonesia</option>
+									    <option value="Indonesia">Indonesia</option>
 								    </select>
                                     @error('negara')
                                     <div class="invalid-feedback">{{ $message }}</div>
