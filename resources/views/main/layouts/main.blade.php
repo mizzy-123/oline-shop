@@ -33,6 +33,8 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    @stack('css')
+
 </head>
 
 <body>
@@ -80,7 +82,25 @@
     <script src="{{ asset('js/contact-form-script.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui.js') }}"></script>
+    <script src="{{ asset('js/jquery.nicescroll.min.js') }}"></script>
     @stack('js')
+    <script>
+      // Ambil referensi tombol dengan ID
+      const myButton = document.getElementById('pointer');
+    
+      // Tambahkan event listener untuk saat tombol dihover
+      myButton.addEventListener('mouseenter', function () {
+        // Ubah kursor menjadi pointer saat dihover
+        myButton.style.cursor = 'pointer';
+      });
+    
+      // Event listener saat mouse meninggalkan tombol (opsional)
+      myButton.addEventListener('mouseleave', function () {
+        // Kembalikan kursor ke tampilan default saat mouse meninggalkan tombol
+        myButton.style.cursor = 'auto';
+      });
+    </script>    
 </body>
 
 </html>

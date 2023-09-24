@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.main')
 
-@section('title', 'shop')
+@section('title', 'dashboard')
 
 @section('container')
 
@@ -11,23 +11,6 @@
     <section class="row">
       <div class="col-12 col-lg-9">
         <div class="row">
-          <div class="col-6 col-lg-3 col-md-6">
-            <div class="card">
-              <div class="card-body px-4 py-4-5">
-                <div class="row">
-                  <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
-                    <div class="stats-icon purple mb-2">
-                      <i class="iconly-boldShow"></i>
-                    </div>
-                  </div>
-                  <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                    <h6 class="text-muted font-semibold">Profile Views</h6>
-                    <h6 class="font-extrabold mb-0">112.000</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="col-6 col-lg-3 col-md-6">
             <div class="card">
               <div class="card-body px-4 py-4-5">
@@ -84,13 +67,30 @@
               <div class="card-body px-4 py-4-5">
                 <div class="row">
                   <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+                    <div class="stats-icon purple mb-2">
+                      <i class='bx bxs-receipt' ></i>
+                    </div>
+                  </div>
+                  <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                    <h6 class="text-muted font-semibold">Order</h6>
+                    <h6 class="font-extrabold mb-0">{{ $total_order }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body px-4 py-4-5">
+                <div class="row">
+                  <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
                     <div class="stats-icon red mb-2">
                       <i class='bx bx-time'></i>
                     </div>
                   </div>
                   <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                    <h6 class="text-muted font-semibold">Pending</h6>
-                    <h6 class="font-extrabold mb-0">112</h6>
+                    <h6 class="text-muted font-semibold">Order Unpaid</h6>
+                    <h6 class="font-extrabold mb-0">{{ $order_unpaid }}</h6>
                   </div>
                 </div>
               </div>
@@ -106,8 +106,25 @@
                     </div>
                   </div>
                   <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                    <h6 class="text-muted font-semibold">Succes</h6>
-                    <h6 class="font-extrabold mb-0">80.000</h6>
+                    <h6 class="text-muted font-semibold">Order Paid</h6>
+                    <h6 class="font-extrabold mb-0">{{ $order_paid }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body px-4 py-4-5">
+                <div class="row">
+                  <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
+                    <div class="stats-icon red mb-2">
+                      <i class='bx bxs-x-square'></i>
+                    </div>
+                  </div>
+                  <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                    <h6 class="text-muted font-semibold">Order Cancel</h6>
+                    <h6 class="font-extrabold mb-0">{{ $order_cancel}}</h6>
                   </div>
                 </div>
               </div>
@@ -149,6 +166,7 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
+                  <a onclick="resendAll(this)" href="{{ route('resend.all') }}" class="btn btn-primary mb-3">Resend all failed status</a>
                   <table class="table table-hover table-lg">
                     <thead>
                       <tr>
@@ -177,7 +195,7 @@
                           @endif
                         </td>
                         <td class="col-3">
-                          <a href="{{ route('resend', ['wamessage' => $wa->id]) }}" class="btn btn-warning" @if ($wa->status == 1)
+                          <a onclick="resend(this)" href="{{ route('resend', ['wamessage' => $wa->id]) }}" class="btn btn-warning" @if ($wa->status == 1)
                             hidden
                           @endif><i class='bx bx-send'></i> Re-send</a>
                         </td>
@@ -185,6 +203,9 @@
                       @endforeach
                     </tbody>
                   </table>
+                </div>
+                <div class="d-flex justify-content-end">
+                  {{ $waMessage->links() }}
                 </div>
               </div>
             </div>
@@ -199,13 +220,13 @@
                 <img src="assets/images/faces/1.jpg" alt="Face 1" />
               </div>
               <div class="ms-3 name">
-                <h5 class="font-bold">John Duck</h5>
-                <h6 class="text-muted mb-0">@johnducky</h6>
+                <h5 class="font-bold">{{ auth()->user()->firstname }}</h5>
+                <h6 class="text-muted mb-0">{{ '@'.auth()->user()->name }}</h6>
               </div>
             </div>
           </div>
         </div>
-        <div class="card">
+        {{-- <div class="card">
           <div class="card-header">
             <h4>Recent Messages</h4>
           </div>
@@ -241,7 +262,7 @@
               <button class="btn btn-block btn-xl btn-outline-primary font-bold mt-3">Start Conversation</button>
             </div>
           </div>
-        </div>
+        </div> --}}
       </div>
     </section>
 </div>
@@ -268,6 +289,16 @@ function getWhatsAppStatus() {
             getChange(response.status);
         },
     });
+}
+
+function resendAll(obj){
+  obj.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Loading...`
+}
+
+function resend(obj){
+  obj.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Loading...`
 }
 
 setInterval(getWhatsAppStatus, 2000);

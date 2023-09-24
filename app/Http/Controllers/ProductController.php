@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $product = Product::orderByDesc('created_at')->get();
+        $product = Product::orderByDesc('created_at')->paginate(6);
 
         $category = Category::all();
 
@@ -139,7 +139,8 @@ class ProductController extends Controller
     public function editPhoto(Product $product)
     {
         return view('dashboard.pages.gallery-product', [
-            'foto_product' => $product->fotoProduct()->get()
+            'foto_product' => $product->fotoProduct()->get(),
+            'product' => $product
         ]);
 
         // return dd(array_chunk($product->fotoProduct()->get()->toArray(), 4));
@@ -160,5 +161,30 @@ class ProductController extends Controller
         $photo->update($validated);
 
         return back()->with('succes', 'Foto berhasil update');
+    }
+
+    public function tambahPhoto(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'foto' => 'file|image'
+        ]);
+
+        if ($request->file('foto')) {
+            $validated['foto'] = $request->file('foto')->store('gambar-product');
+        }
+        $fotoProduct = new FotoProduct;
+        $fotoProduct->foto = $validated['foto'];
+        $product->fotoProduct()->save($fotoProduct);
+
+        return back()->with('succes', 'Foto berhasil ditambah');
+    }
+
+    public function deletePhoto(FotoProduct $photo)
+    {
+        if ($photo->foto != null) {
+            Storage::delete($photo->foto);
+        }
+        $photo->delete();
+        return back()->with('succes', 'Foto berhasil dihapus');
     }
 }

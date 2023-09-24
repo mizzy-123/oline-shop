@@ -27,6 +27,30 @@ class WhatsappController extends Controller
         }
     }
 
+    public function resendAll()
+    {
+        $message = WaMessage::where('status', 2)->get();
+
+        try {
+            foreach ($message as $wa) {
+                $pesan = $wa->message;
+                $nomor = $wa->no_wa;
+                $response = $this->sendWa($pesan, $nomor);
+                if (!$response->badRequest()) {
+                    $wa->update([
+                        'status' => 1
+                    ]);
+                } else {
+                    return back()->with('errorSend', 'Cannot send message or you are not connected');
+                }
+            }
+        } catch (\Throwable $th) {
+            return back()->with('errorSend', 'Server error');
+        }
+
+        return back()->with('succesSend', 'Send message succesfull');
+    }
+
     public function sendWa($pesan, $nomor)
     {
         $response = Http::withHeaders([

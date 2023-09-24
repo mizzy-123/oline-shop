@@ -39,6 +39,15 @@
                 </div>
             </div>
             @endforeach
+
+            @if (session()->has('status'))
+            <div class="alert alert-success d-flex align-items-center" role="success">
+                <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:" width="16" height="16"><use xlink:href="#check-circle-fill"/></svg>
+                <div class="px-3">
+                  {{ session('status') }}
+                </div>
+            </div>
+            @endif
             <h1 class="auth-title">Log in.</h1>
             <p class="auth-subtitle mb-5">Log in with your data that you entered during registration.</p>
 
@@ -64,7 +73,7 @@
             </form>
             <div class="text-center mt-5 text-lg fs-4">
               <p class="text-gray-600">Don't have an account? <a href="{{ route('register') }}" class="font-bold">Sign up</a>.</p>
-              <p><a class="font-bold" href="auth-forgot-password.html">Forgot password?</a>.</p>
+              <p><a class="font-bold" href="{{ route('password.request') }}">Forgot password?</a>.</p>
             </div>
           </div>
         </div>

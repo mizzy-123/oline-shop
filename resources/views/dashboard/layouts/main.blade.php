@@ -53,6 +53,7 @@
     {{-- <script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script> --}}
     @stack('js')
+    <script src="https://kit.fontawesome.com/8eb93ea7f8.js" crossorigin="anonymous"></script>
 
 </body>
 

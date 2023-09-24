@@ -7,7 +7,7 @@
     <div class="page-title">
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Gallery photo product</h3>
+                <h3>Gallery photo product {{ $product->name }}</h3>
                 <p class="text-subtitle text-muted">Multiple form layouts, you can use</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
@@ -61,7 +61,7 @@
                 @endif
                 <div class="card">
                     <div class="card-header">
-                        <a href="#" class="btn btn-primary mb-3">Tambah Foto</a>
+                        <button onclick="tambahFoto(this)" type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahFoto">Tambah Foto</button>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
@@ -70,10 +70,10 @@
                             @endphp
 
                             @foreach ($chunkedFoto as $chunk)
-                            <div class="row mt-2 mt-md-4 gallery" data-bs-toggle="modal" data-bs-target="#galleryModal">
+                            <div class="row mt-2 mt-md-4 gallery">
                                 <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
-                                    <a onclick="modalClick(this)" href="#" data-id="{{ $chunk[0]['id'] }}">
-                                        <img class="w-100 active" src="{{ asset('storage/'.$chunk[0]['foto']) }}" data-bs-target="#Gallerycarousel" data-bs-slide-to="{{ $chunk[0]['id'] }}" id="galleryImg">
+                                    <a onclick="modalClick(this)" href="#" data-id="{{ $chunk[0]['id'] }}" data-bs-toggle="modal" data-bs-target="#Gallerycarousel{{ $chunk[0]['id'] }}">
+                                        <img class="w-100 active" src="{{ asset('storage/'.$chunk[0]['foto']) }}" id="galleryImg">
                                     </a>
                                 </div>
                                 @foreach ($chunk as $index => $foto)
@@ -83,8 +83,8 @@
                                         }
                                     @endphp
                                     <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
-                                        <a onclick="modalClick(this)" href="#" data-id="{{ $foto['id'] }}">
-                                            <img class="w-100" src="{{ asset('storage/'.$foto['foto']) }}" data-bs-target="#Gallerycarousel" data-bs-slide-to="{{ $foto['id'] }}" id="galleryImg">
+                                        <a onclick="modalClick(this)" href="#" data-id="{{ $foto['id'] }}" data-bs-toggle="modal" data-bs-target="#Gallerycarousel{{ $foto['id'] }}">
+                                            <img class="w-100" src="{{ asset('storage/'.$foto['foto']) }}" id="galleryImg">
                                         </a>
                                     </div>
                                 @endforeach
@@ -97,12 +97,13 @@
         </div>
     </section>
 </div>
-<div class="modal fade" id="galleryModal" tabindex="-1" role="dialog"
-aria-labelledby="galleryModalTitle" aria-hidden="true">
+@foreach ($foto_product as $f)
+<div class="modal fade" id="Gallerycarousel{{ $f->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="galleryModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-centered"
-role="document">
+        role="document">
         <div class="modal-content">
-            <form class="form form-vertical" action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data" id="formModal">
+            <form class="form form-vertical" action="{{ route('product.update.photo', ['photo' => $f->id]) }}" method="POST" enctype="multipart/form-data" id="formModal">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="galleryModalTitle">Our Gallery Example</h5>
@@ -112,30 +113,50 @@ role="document">
                     </button>
                 </div>
                 <div class="modal-body">
-                
-                    <div id="Gallerycarousel" class="carousel slide carousel-fade">
-                        {{-- <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#Gallerycarousel" data-bs-slide-to="{{ $foto_product[0]->id }}" class="active" aria-current="true" aria-label="Slide {{ $foto_product[0]->id }}"></button>
-                            @foreach ($foto_product->skip(1) as $f)
-                            <button type="button" data-bs-target="#Gallerycarousel" data-bs-slide-to="{{ $f->id }}" class="active" aria-current="true" aria-label="Slide {{ $f->id }}"></button>
-                            @endforeach
-                        </div> --}}
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img class="d-block w-100" src="{{ asset('storage/'.$foto_product[0]->foto) }}" id="modalImg" data-id="{{ $foto_product[0]->id }}">
-                            </div>
-                            @foreach ($foto_product as $f)
-                            <div class="carousel-item">
-                                <img class="d-block w-100" src="{{ asset('storage/'.$f->foto) }}" id="modalImg" data-id="{{ $f->id }}">
-                            </div>
-                            @endforeach
+                    <img class="d-block w-100" src="{{ asset('storage/'.$f->foto) }}" id="modalImg" data-id="{{ $f->id }}">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label for="file_foto">Foto product</label>
+                            <input type="file" id="file_foto" class="form-control"
+                            name="foto" placeholder="Foto product" required>
                         </div>
-                        <div class="form-body">
-                            <div class="form-group">
-                                <label for="file_foto">Foto product</label>
-                                <input type="file" id="file_foto" class="form-control"
-                                    name="foto" placeholder="Foto product" value="{{ old('foto') }}" required>
-                            </div>
+                    </div>
+                </div>
+            
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="{{ route('product.delete.photo', ['photo' => $f->id]) }}" class="btn btn-danger" id="deleteModalPhoto"> Delete</a>
+                    <button type="submit" class="btn btn-primary">Save and changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+<div class="modal fade" id="tambahFoto" tabindex="-1" role="dialog"
+    aria-labelledby="galleryModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered"
+        role="document">
+        <div class="modal-content">
+            <form class="form form-vertical" action="{{ route('product.tambah.photo', ['product' => $product->id]) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah foto</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-body">
+                        
+                        <img hidden class="d-block w-100" src="#" id="tambahModalImg">
+                        
+                        <div class="form-group">
+                            <label for="file_foto">Foto product</label>
+                            <input type="file" id="tambahFotoProduct" class="form-control"
+                                name="foto" placeholder="Foto product" required>
                         </div>
                     </div>
                 </div>
@@ -153,33 +174,89 @@ role="document">
     
 <script type="text/javascript">
     function modalClick(ev){
-        const formModal = document.getElementById('formModal');
+        // const formModal = document.getElementById('formModal');
         const fotoId = ev.dataset.id;
 
-        formModal.setAttribute("action", `/update-photo/${fotoId}`);
+        // formModal.setAttribute("action", `/update-photo/${fotoId}`);
 
         previewImage(fotoId);
+        // deletePhoto(fotoId);
     }
 
     function previewImage(id){
-        const fileFoto = document.getElementById('file_foto');
+        const fileFoto = document.querySelectorAll('#file_foto');
         const imgModal = document.querySelectorAll('#modalImg');
+        const oFReader = new FileReader();
+
+        fileFoto.forEach((f) => {
+            f.addEventListener("change", () => {
+                oFReader.readAsDataURL(f.files[0]);
+                
+                oFReader.onload = (oFREvent) => {
+                    imgModal.forEach((e) => {
+                        if(e.dataset.id == id){
+                            e.setAttribute("src", oFREvent.target.result)
+                            console.log(oFREvent.target.result);
+                        }
+                        console.log("dataset "+e.dataset.id+"id"+id);
+                    });
+                }
+    
+            });
+        });
+    }
+
+    function tambahFoto(e){
+        const fileFoto = document.getElementById('tambahFotoProduct');
+        const imgModal = document.getElementById('tambahModalImg');
         const oFReader = new FileReader();
         fileFoto.addEventListener("change", (e) => {
             oFReader.readAsDataURL(fileFoto.files[0]);
             
             oFReader.onload = (oFREvent) => {
-                imgModal.forEach((e) => {
-                    if(e.dataset.id == id){
-                        e.setAttribute("src", oFREvent.target.result)
-                        // console.log(oFREvent.target.result);
-                    }
-                    // console.log("dataset "+e.dataset.id+"id"+id);
-                });
+                imgModal.hidden = false;
+                imgModal.setAttribute("src", oFREvent.target.result);
             }
 
         });
     }
+
+    // function deletePhoto(id){
+    //     const deleteImg = document.getElementById('deleteModalPhoto');
+    //     const imgModal1 = document.querySelectorAll('#modalImg');
+
+    //     deleteImg.addEventListener("click", (e) => {
+    //         e.preventDefault();
+    //         imgModal1.forEach((e) => {
+    //             if(e.dataset.id == id){
+    //                 window.location.href = `/delete-photo-product/${id}`;
+    //                 console.log('masuk');
+    //             }
+    //         });
+    //     });
+    // }
+
+    // function deletePhoto(e){
+    //     e.preventDefault();
+    //     Swal.fire({
+    //       title: 'Are you sure?',
+    //       text: "You won't be able to revert this!",
+    //       icon: 'warning',
+    //       confirmButtonText: 'Yes, delete it!',
+    //       showCancelButton: true,
+    //       confirmButtonColor: '#3085d6',
+    //       cancelButtonColor: '#d33',
+    //       customClass: {
+    //         confirmButton: 'mx-3', // Atur kelas CSS untuk tombol konfirmasi
+    //         cancelButton: 'mx-3' // Atur kelas CSS untuk tombol cancel
+    //       }
+    //     }).then((result) => {
+    //       if (result.isConfirmed) {
+    //         const url = e.target.getAttribute('href');
+    //         window.location.href = url;
+    //       }
+    //     })
+    // }
 </script>
 
 @endpush

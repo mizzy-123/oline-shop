@@ -35,6 +35,15 @@
               </div>
           </div>
           @endif
+
+          @if (session()->has('info'))
+          <div class="alert alert-info d-flex align-items-center" role="success">
+            <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:" width="16" height="16"><use xlink:href="#info-fill"/></svg>
+            <div class="px-3">
+              {{ session('info') }}
+            </div>
+          </div>
+          @endif
           
             {{-- <div class="auth-logo">
               <a href="index.html"><img src="assets/images/logo/logo.svg" alt="Logo" /></a>
@@ -53,5 +62,10 @@
         </div>
       </div>
     </div>
+    @if (session()->has('info'))
+    <script>
+      sessionStorage.removeItem("cart");
+    </script>
+    @endif
   </body>
 </html>

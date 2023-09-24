@@ -7,7 +7,7 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa fa-bars"></i>
             </button>
-                <a class="navbar-brand" href="index.html"><img src="{{ asset('images/logo.png') }}" class="logo" alt=""></a>
+                <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" class="logo" alt=""></a>
             </div>
             <!-- End Header Navigation -->
 
@@ -16,19 +16,18 @@
                 <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
                     <li class="nav-item {{ Request::is('/') ? 'active' : '' }}"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
                     <li class="nav-item {{ Request::is('about') ? 'active' : '' }}"><a class="nav-link" href="{{ route('about') }}">About Us</a></li>
-                    <li class="dropdown">
+                    <li class="dropdown nav-item {{ Request::is('checkout') || Request::is('cart') || Request::is('shop') ? 'active' : '' }}">
                         <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">SHOP</a>
                         <ul class="dropdown-menu">
-                            <li><a href="shop.html">Sidebar Shop</a></li>
-                            <li><a href="shop-detail.html">Shop Detail</a></li>
+                            <li><a href="{{ route('shop.index') }}">Sidebar Shop</a></li>
                             <li><a href="{{ route('cart') }}">Cart</a></li>
-                            <li><a href="checkout.html">Checkout</a></li>
-                            <li><a href="my-account.html">My Account</a></li>
-                            <li><a href="wishlist.html">Wishlist</a></li>
+                            <li><a href="{{ route('checkout') }}">Checkout</a></li>
+                            {{-- <li><a href="my-account.html">My Account</a></li>
+                            <li><a href="wishlist.html">Wishlist</a></li> --}}
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
+                    {{-- <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li> --}}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

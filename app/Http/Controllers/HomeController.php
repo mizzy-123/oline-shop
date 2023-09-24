@@ -11,8 +11,11 @@ class HomeController extends Controller
     {
         $product = Product::inRandomOrder()->take(8)->get();
 
+        $new = Product::orderByDesc('created_at')->take(8)->get();
+
         return view('main.pages.home', [
-            'product' => $product
+            'product' => $product,
+            'new' => $new
         ]);
     }
 }

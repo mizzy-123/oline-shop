@@ -52,6 +52,9 @@
                         </div>
                         <form action="{{ route('checkout.store') }}" method="POST" class="needs-validation">
                             @csrf
+
+                            @auth
+                            @else
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="firstName">First name *</label>
@@ -124,6 +127,8 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            @endauth
                             <div class="mb-3">
                                 <label for="address">Alamat *</label>
                                 <input type="text" class="form-control @error('alamat')
@@ -186,7 +191,23 @@
                                     <h3>Shipping Method</h3>
                                 </div>
                                 <div class="mb-4">
+                                    @foreach ($ongkir as $o)
+                                    <?php $angka = $loop->iteration; ?>
                                     <div class="custom-control custom-radio">
+                                        <input id="ongkirId" type="hidden" name="idOngkir" value="{{ $o->id }}">
+                                        <input id="shippingOption{{ $angka }}" name="shipping-option" class="custom-control-input" @if ($o->harga == 0)
+                                        checked="checked"
+                                        @endif type="radio" value="{{ $o->harga }}">
+                                        <label class="custom-control-label" for="shippingOption{{ $angka }}">{{ $o->name }}</label> <span class="float-right font-weight-bold"><?php
+                                            $angka = $o['harga'];
+                                            $rupiah = number_format($angka, 0, ',', '.');
+                                            echo 'Rp ' . $rupiah;
+                                            ?></span> </div>
+                                    <div class="ml-4 mb-2 small">@if ($o->description != null)
+                                        ({{ $o->description }})
+                                    @endif</div>
+                                    @endforeach
+                                    {{-- <div class="custom-control custom-radio">
                                         <input id="shippingOption1" name="shipping-option" class="custom-control-input" checked="checked" type="radio" value="0">
                                         <label class="custom-control-label" for="shippingOption1">Standard Delivery</label> <span class="float-right font-weight-bold">FREE</span> </div>
                                     <div class="ml-4 mb-2 small">(3-7 business days)</div>
@@ -196,7 +217,7 @@
                                     <div class="ml-4 mb-2 small">(2-4 business days)</div>
                                     <div class="custom-control custom-radio">
                                         <input id="shippingOption3" name="shipping-option" class="custom-control-input" type="radio" value="20000">
-                                        <label class="custom-control-label" for="shippingOption3">Next Business day</label> <span class="float-right font-weight-bold">Rp20.000</span> </div>
+                                        <label class="custom-control-label" for="shippingOption3">Next Business day</label> <span class="float-right font-weight-bold">Rp20.000</span> </div> --}}
                                 </div>
                             </div>
                         </div>

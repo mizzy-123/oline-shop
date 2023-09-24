@@ -49,21 +49,31 @@
         <ul class="menu">
           <li class="sidebar-title">Menu</li>
 
-          <li class="sidebar-item active">
+          <li class="sidebar-item {{ Request::is('dashboard') ? 'active' : '' }}">
             <a href="{{ route('dashboard') }}" class="sidebar-link">
               <i class="bi bi-grid-fill"></i>
               <span>Dashboard</span>
             </a>
           </li>
+          
+          @can('user')
+          <li class="sidebar-item {{ Request::is('edit-account') ? 'active' : '' }}">
+            <a href="{{ route('user.edit') }}" class="sidebar-link">
+              <i class='bx bxs-user'></i>
+              <span>Edit Account</span>
+            </a>
+          </li>
+          @endcan
 
-          <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+          @can('admin')
+          <li class="sidebar-item {{ Request::is('order') ? 'active' : '' }}">
+            <a href="{{ route('order') }}" class="sidebar-link">
               <i class='bx bx-receipt'></i>
               <span>Order</span>
             </a>
           </li>
 
-          <li class="sidebar-item has-sub">
+          <li class="sidebar-item has-sub {{ Request::is('product') || Request::is('jenis-product') ? 'active' : '' }}">
             <a href="#" class="sidebar-link">
               <i class='bx bxs-package'></i>
               <span>Products</span>
@@ -80,12 +90,29 @@
 
           <li class="sidebar-title">Whatsapp</li>
 
-          <li class="sidebar-item">
+          <li class="sidebar-item {{ Request::is('scan') ? 'active' : '' }}">
             <a href="{{ route('scan') }}" class="sidebar-link">
                 <i class='bx bx-qr-scan' ></i>
               <span>Scan</span>
             </a>
           </li>
+
+          <li class="sidebar-title"><hr></li>
+          <li class="sidebar-item {{ Request::is('shipper') ? 'active' : '' }}">
+            <a href="{{ route('shipp.index') }}" class="sidebar-link">
+              <i class='bx bxs-truck' ></i>
+              <span>Shipper</span>
+            </a>
+          </li>
+          @endcan
+          <li class="sidebar-title"><hr></li>
+          <li class="sidebar-item">
+            <a href="{{ route('logout') }}" class="sidebar-link">
+              <i class='bx bx-exit' ></i>
+              <span>Log Out</span>
+            </a>
+          </li>
+
         </ul>
       </div>
     </div>

@@ -2,7 +2,7 @@ const addToCartButton = document.querySelectorAll("#addcart");
 let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
 addToCartButton.forEach((button) => {
     button.addEventListener("click", function (e) {
-        const productDiv = this.closest(".mask-icon");
+        const productDiv = this.closest(".itemProduct");
         const productId = productDiv.dataset.id;
         const productName = productDiv.dataset.name;
         const productPrice = parseFloat(productDiv.dataset.price);

@@ -17,6 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->integer('status');
+            $table->string('alamat');
+            $table->string('negara');
+            $table->string('kota');
+            $table->integer('zip');
+            $table->bigInteger('harga_ongkir');
             $table->timestamps();
         });
     }

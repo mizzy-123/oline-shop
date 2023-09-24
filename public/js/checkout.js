@@ -4,13 +4,18 @@ order.addEventListener("click", function (e) {
     // const checkoutStruk = document.getElementById("strukCheckout");
     const dataOrder = document.getElementById("dataOrder");
     let shiperData = 0;
+    let idOngkir = null;
     const shippingOptions = document.querySelectorAll(
         'input[name="shipping-option"]'
     );
 
     shippingOptions.forEach((option) => {
         if (option.checked) {
+            const oid = option
+                .closest(".custom-control")
+                .querySelector("input#ongkirId");
             shiperData = option.value;
+            idOngkir = oid.value;
         }
     });
 
@@ -28,7 +33,12 @@ order.addEventListener("click", function (e) {
     let htmlJumProduct = `<input type="hidden" name="pProduct" value="${jumProduct}">`;
     let htmlShip = `<input type="hidden" name="shipper" value="${shiperData}">`;
 
-    dataOrder.innerHTML = dataProduct + htmlJumProduct + htmlShip;
+    if (idOngkir != null) {
+        let ongkir = `<input type="hidden" name="idOngkir" value="${idOngkir}">`;
+        dataOrder.innerHTML = dataProduct + htmlJumProduct + htmlShip + ongkir;
+    } else {
+        dataOrder.innerHTML = dataProduct + htmlJumProduct + htmlShip;
+    }
 
     e.preventDefault();
     submit.click();
