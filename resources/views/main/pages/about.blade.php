@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-        <div class="row my-4">
+        {{-- <div class="row my-4">
             <div class="col-12">
                 <h2 class="noo-sh-title">Meet Our Team</h2>
             </div>
@@ -149,7 +149,7 @@
                     </div>
                     <hr class="my-0"> </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
     

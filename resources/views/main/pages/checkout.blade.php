@@ -25,7 +25,7 @@
                 </div>
             </div>
             @endforeach
-            <div class="row new-account-login">
+            {{-- <div class="row new-account-login">
                 <div class="col-sm-6 col-lg-6 mb-3">
                     <div class="title-left">
                         <h3>Account Login</h3>
@@ -43,7 +43,7 @@
                         <button type="submit" class="btn hvr-hover">Login</button>
                     </form>
                 </div>
-            </div>
+            </div> --}}
             <div class="row">
                 <div class="col-sm-6 col-lg-6 mb-3">
                     <div class="checkout-address">
